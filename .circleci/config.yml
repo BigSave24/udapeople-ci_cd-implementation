@@ -254,7 +254,7 @@ cleanup:
   docker:
     - image: circleci/node:13.8.0
   steps:
-    # Checkout code from git
+    - checkout
     - run:
         name: Get old stack workflow id
         command: |

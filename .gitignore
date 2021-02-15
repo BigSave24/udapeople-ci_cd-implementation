@@ -1,3 +1,4 @@
 .circleci/config_test.yml
 instructions/
 package-lock.json
+frontend/package-lock.json

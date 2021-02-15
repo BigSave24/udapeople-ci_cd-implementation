@@ -108,6 +108,11 @@ jobs:
           keys:
             - v2frontend-build
       # Your job code here
+      - run:
+          name: Frontend scan
+          command: |
+            cd frontend
+            npm audit --audit-level=critical
 
   scan-backend:
     docker:
@@ -118,6 +123,11 @@ jobs:
           keys:
             - v2backend-build
       # Your job code here
+      - run:
+          name: Backend scan
+          command: |
+            cd backend
+            npm audit --audit-level=critical
 
   deploy-infrastructure:
     docker:

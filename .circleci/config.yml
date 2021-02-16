@@ -144,16 +144,16 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
-              --stack-name "udap-backend-47cqz39vzr" \
-              --parameter-overrides ID="47cqz39vzr"
+              --stack-name "udap-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
       - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
-              --stack-name "udap-frontend-47cqz39vzr" \
-              --parameter-overrides ID="47cqz39vzr"
+              --stack-name "udap-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -165,6 +165,12 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
+      - run:
+          name: Destroy environment
+          command: |
+            aws cloudformation delete-stack --stack-name "udap-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name "udap-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+          when: on_fail
 
   configure-infrastructure:
     docker:

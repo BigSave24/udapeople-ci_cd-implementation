@@ -38,7 +38,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [v5frontend-build]
       - run:
           name: Build front-end
           command: |
@@ -58,7 +58,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [v5backend-build]
       - run:
           name: Back-end build
           command: |

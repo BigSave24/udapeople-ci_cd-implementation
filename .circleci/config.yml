@@ -45,6 +45,7 @@ jobs:
             cd frontend
             npm i
             npm run build
+            npm i oauth-sign
             npm i --package-lock-only
       - save_cache:
           paths:
@@ -113,6 +114,7 @@ jobs:
           name: Frontend scan
           command: |
             cd frontend
+            npm i --package-lock-only
             npm audit --audit-level=critical
 
   scan-backend:

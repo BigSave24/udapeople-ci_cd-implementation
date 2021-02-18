@@ -137,9 +137,12 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli:2.1.16
+      - image: amazon/aws-cli
     steps:
       - checkout
+      - checkout
+      - run: yum -y install tar gzip jq npm
+      - run: yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm jq
       - run:
           name: Ensure back-end infrastructure exists
           command: |

@@ -165,7 +165,16 @@ jobs:
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventory.txt
+            alias BACKEND_URL=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicDnsName' \
+              --output text)
+            $BACKEND_URL
             cat inventory.txt
+      - run:
+          name: Save Backend url
+          command: |
+            curl -H "Content-Type: text/plain" -H "token: 29e7fed1-1e2e-457b-809e-2a36aa4b437c" \
+              --request PUT --data "$BACKEND_URL" https://api.memstash.io/values/backend_connect
       - persist_to_workspace:
           root: ~/
           paths:

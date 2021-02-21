@@ -1,0 +1,23 @@
+---
+- name: remove dependencies that are no longer needed
+  become: yes
+  apt:
+    autoremove: yes
+
+- name: "install dependencies"
+  become: yes
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
+
+- name: "install libcap2-bin"
+  become: yes
+  apt:
+    name: libcap2-bin
+    state: latest
+    update_cache: yes
+
+- name: permission to use Port 80
+  become: yes
+  shell: setcap cap_net_bind_service=+ep /usr/local/bin/node

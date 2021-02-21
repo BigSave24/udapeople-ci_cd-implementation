@@ -1,5 +1,5 @@
 version: 2.1
-
+# Command definitions of steps to be executed in a job
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -36,6 +36,7 @@ commands:
               exit 1
             fi
 
+# Schedule a set of jobs
 jobs:
   build-frontend:
     docker:
@@ -140,7 +141,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - checkout
       - run: yum -y install tar gzip jq npm
       - run: yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm jq
       - run:
@@ -187,7 +187,10 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - python -m pip install awscli
       # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints: [8c:ba:0f:cf:a6:70:ff:38:b2:60:5f:2a:21:31:bf:2d]
       # attach workspace
       - run:
           name: Install dependencies
@@ -200,6 +203,7 @@ jobs:
             # Your code here
             exit 1
       # Here's where you will add some code to rollback on failure
+      executor: aws
       - destroy-environment
 
   run-migrations:

@@ -2,6 +2,7 @@
     https://github.com/BigSave24/udapeople-ci_cd-implementation
 
 2. Public URL for your S3 Bucket (aka, your green candidate front-end) [URL02]
+    https://udapeople-47cqz39vzr.s3.amazonaws.com/index.html
 
 3. Public URL for your CloudFront distribution (aka, your blue production front-end) [URL03]
 
@@ -10,19 +11,27 @@
 
 
 5. Public URL to your Prometheus Server [URL05]
+
+
 - Your screenshots in JPG or PNG format, named using the screenshot number listed in the instructions. These screenshots should be included in your code repository in the root folder.
 
 6. Job failed because of compile errors. [SCREENSHOT01]
+    Complete
 
 7. Job failed because of unit tests. [SCREENSHOT02]
+    Complete
 
 8. Job that failed because of vulnerable packages. [SCREENSHOT03]
+    Complete
 
 9. An alert from one of your failed builds. [SCREENSHOT04]
+    Complete
 
 10. Appropriate job failure for infrastructure creation. [SCREENSHOT05]
+    Comnplete
 
 11. Appropriate job failure for the smoke test job. [SCREENSHOT06]
+
 
 12. Successful rollback after a failed smoke test. [SCREENSHOT07]  
 

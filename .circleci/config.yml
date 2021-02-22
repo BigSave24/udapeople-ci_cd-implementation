@@ -20,20 +20,20 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
-      # Add parameter here
+      migration_flow:
+        type: string
+        default: migration_${CIRCLE_WORKFLOW_ID}
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: always
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            SUCCESS = curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
+              --request GET https://api.memstash.io/values/<< parameters.migration_${CIRCLE_WORKFLOW_ID} >>
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+              cd ~/project/backend
+              npm run migrations:revert
             fi
 
 # Schedule a set of jobs
@@ -211,14 +211,22 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            # Your code here
-            exit 1
+            cd backend  
+            npm run migrations > /tmp/migrate.txt
+            alias MIGRATE_MSG=$(cat /tmp/migrate.txt)
+
       - run:
           name: Send migration results to memstash
           command: |
-            # Your code here
-            exit 1
+            if grep -c "has been executed successfully"
+            then
+              curl -H "Content-Type: text/plain" -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
+                --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            else
+              echo "Migration failed"
+      - revert-migrations
       # Here's where you will add some code to rollback on failure
+      - destroy-environment
 
   deploy-frontend:
     docker:

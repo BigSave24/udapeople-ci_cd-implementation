@@ -208,6 +208,13 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - run: npm install typescript -g
+      - run:
+          name: Install aws cli
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            ./aws/install
       - run:
           name: Run migrations
           command: |
@@ -224,6 +231,7 @@ jobs:
                 --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
             else
               echo "Migration failed"
+            fi
       - revert-migrations
       # Here's where you will add some code to rollback on failure
       - destroy-environment

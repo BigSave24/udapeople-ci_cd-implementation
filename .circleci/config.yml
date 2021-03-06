@@ -199,6 +199,7 @@ jobs:
             pip install awscli
       - run:
           name: Configure server
+          no_out_timeout: 30m
           command: |
             echo ENVIRONMENT=production > "backend/.env"
             echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> "backend/.env"

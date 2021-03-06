@@ -28,11 +28,12 @@ commands:
           name: Revert migrations
           when: always
           command: |
-            SUCCESS = curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
+            SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
               --request GET https://api.memstash.io/values/\<< parameters.migration_${CIRCLE_WORKFLOW_ID} >>
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
+              npm i
               npm run migrations:revert
             fi
 orbs:

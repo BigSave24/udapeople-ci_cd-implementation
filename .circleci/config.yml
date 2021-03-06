@@ -171,7 +171,7 @@ jobs:
             alias BACKEND_URL=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicDnsName' \
               --output text)
-            $BACKEND_URL
+            echo $BACKEND_URL
             cat inventory.txt
       - run:
           name: Save Backend url
@@ -190,16 +190,15 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      # - run: python -m pip install awscli
-      - aws-cli/setup
       - add_ssh_keys:
           fingerprints: [8c:ba:0f:cf:a6:70:ff:38:b2:60:5f:2a:21:31:bf:2d]
       - attach_workspace:
-          at: /~
+          at: ~/
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible
+            apk add --update ansible tar gzip jq npm nodejs curl
+            pip install awscli
       - run:
           name: Configure server
           command: |
@@ -213,6 +212,7 @@ jobs:
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+            cd .circleci/ansible
             ansible-playbook -i inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure
       - destroy-environment

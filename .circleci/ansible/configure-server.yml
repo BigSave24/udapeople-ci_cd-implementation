@@ -27,6 +27,5 @@
       changed_when: false
 
   roles:
-    - setup
-    - setup_node
-    - setup_pm2
+    - configure-prometheus-node-exporter
+    - configure-server

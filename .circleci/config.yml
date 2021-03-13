@@ -173,8 +173,10 @@ jobs:
             alias BACKEND_URL=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicDnsName' \
               --output text)
-            echo $BACKEND_IP >> inventory.txt
-            echo $BACKEND_URL
+            echo "BACKEND_IP=$BACKEND_IP"
+            echo "BACKEND_URL=$BACKEND_URL"
+            echo "$BACKEND_IP" >> inventory.txt
+            echo "$BACKEND_URL"
             cat inventory.txt
       - run:
           name: Save Backend url

@@ -19,18 +19,18 @@ commands:
             aws cloudformation delete-stack --stack-name << parameters.backend_env >>
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
-    parameters:
-      migration_flow:
-        type: string
-        default: migration_${CIRCLE_WORKFLOW_ID}
+    # parameters:
+    #   migration_flow:
+    #     type: string
+    #     default: migration_${CIRCLE_WORKFLOW_ID}
     steps:
       - run:
           name: Revert migrations
           when: always
           command: |
             SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
-              --request GET https://api.memstash.io/values/\<< parameters.migration_${CIRCLE_WORKFLOW_ID} >>
-            if(( $SUCCESS==1 )); 
+              --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            if (( $SUCCESS==1 )); 
             then
               cd ~/project/backend
               npm i

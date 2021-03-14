@@ -29,6 +29,7 @@ commands:
           when: on_fail
           command: |
             SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            echo "SUCCESS=$SUCCESS"
             if (( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -233,22 +234,26 @@ jobs:
             cd backend
             npm install
             # npm run build
-            npm run migrations > /tmp/migrate.txt
+            npm run migrations >> /tmp/migrate.txt
             MIGRATE_MSG=$(cat /tmp/migrate.txt | grep -c "has been executed successfully")
+            echo "MIGRATE_MSG=$MIGRATE_MSG"
+            cat $MIGRATE_MSG
 
       - run:
           name: Send migration results to memstash
           command: |
-            if $MIGRATE_MSG==1
-            then
-              curl -H "Content-Type: text/plain" -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
+            curl -H "Content-Type: text/plain" -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
                 --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
-            else
-              echo "Migration failed"
-            fi
+            # if $MIGRATE_MSG==1
+            # then
+              # curl -H "Content-Type: text/plain" -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
+              #   --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            # else
+            #   echo "Migration failed"
+            # fi
       # Here's where you will add some code to rollback on failure
       - destroy-environment
-      - revert-migrations
+      # - revert-migrations
 
   deploy-frontend:
     docker:
@@ -270,6 +275,8 @@ jobs:
           command: |
             # your code here
       # Here's where you will add some code to rollback on failure
+      - destroy-environment
+      # - revert-migrations
 
   deploy-backend:
     docker:

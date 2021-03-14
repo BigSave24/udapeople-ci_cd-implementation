@@ -44,7 +44,7 @@ jobs:
     steps:
       - checkout
       # - restore_cache:
-      #     keys: [v6frontend-build]
+      #     keys: [v7frontend-build]
       - run:
           name: Build front-end
           command: |
@@ -57,7 +57,7 @@ jobs:
           paths:
             - frontend/node_modules
             - frontend/dist
-          key: v6frontend-build
+          key: v7frontend-build
 
   build-backend:
     docker:
@@ -65,7 +65,7 @@ jobs:
     steps:
       - checkout
       # - restore_cache:
-      #     keys: [v6backend-build]
+      #     keys: [v7backend-build]
       - run:
           name: Back-end build
           command: |
@@ -76,7 +76,7 @@ jobs:
           paths:
             - backend/node_modules
             - backend/dist
-          key: v6backend-build
+          key: v7backend-build
 
   test-frontend:
     docker:
@@ -85,7 +85,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v6frontend-build
+            - v7frontend-build
       - run:
           name: Front-end test
           command: |
@@ -100,7 +100,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v6backend-build
+            - v7backend-build
       - run:
           name: Back-end test
           command: |
@@ -115,7 +115,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v6frontend-build
+            - v7frontend-build
       - run:
           name: Frontend scan
           command: |
@@ -131,7 +131,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v6backend-build
+            - v7backend-build
       - run:
           name: Backend scan
           command: |

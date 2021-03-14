@@ -26,10 +26,9 @@ commands:
     steps:
       - run:
           name: Revert migrations
-          when: always
+          when: on_fail
           command: |
-            SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
-              --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
             if (( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -175,8 +174,8 @@ jobs:
               --output text)
             echo "BACKEND_IP=$BACKEND_IP"
             echo "BACKEND_URL=$BACKEND_URL"
-            echo "$BACKEND_IP" >> inventory.txt
-            echo "$BACKEND_URL"
+            echo "$BACKEND_IP" 
+            echo "$BACKEND_URL" >> inventory.txt
             cat inventory.txt
       - run:
           name: Save Backend url
@@ -184,7 +183,7 @@ jobs:
             curl -H "Content-Type: text/plain" -H "token: 29e7fed1-1e2e-457b-809e-2a36aa4b437c" \
               --request PUT --data "$BACKEND_URL" https://api.memstash.io/values/backend_connect
       - persist_to_workspace:
-          root: ~/
+          root: ~/project
           paths:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
@@ -198,7 +197,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: [8c:ba:0f:cf:a6:70:ff:38:b2:60:5f:2a:21:31:bf:2d]
       - attach_workspace:
-          at: ~/
+          at: ~/project
       - run:
           name: Install dependencies
           command: |

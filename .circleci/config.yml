@@ -233,11 +233,11 @@ jobs:
             cd backend
             npm install
             # npm run build
+            npm audit fix --audit-level=critical --force
             npm run migrations >> /tmp/migrate.txt
             MIGRATE_MSG=$(cat /tmp/migrate.txt | grep -c "has been executed successfully")
             echo "MIGRATE_MSG=$MIGRATE_MSG"
             cat $MIGRATE_MSG
-            npm audit fix --audit-level=critical --force
 
       - run:
           name: Send migration results to memstash

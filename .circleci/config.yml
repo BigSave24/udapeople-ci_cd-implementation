@@ -28,7 +28,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID})
             echo "SUCCESS=$SUCCESS"
             if (( $SUCCESS == 1 )); 
             then
@@ -224,16 +224,16 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
           name: Run migrations
           command: |
             cd backend
-            npm install
+            npm i
             # npm run build
-            npm audit fix --audit-level=critical --force
+            npm audit fix --force
             npm run migrations >> /tmp/migrate.txt
             MIGRATE_MSG=$(cat /tmp/migrate.txt | grep -c "has been executed successfully")
             echo "MIGRATE_MSG=$MIGRATE_MSG"

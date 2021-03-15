@@ -28,7 +28,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            SUCCESS=$(curl -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID})
             echo "SUCCESS=$SUCCESS"
             if (( $SUCCESS==1 )); 
             then
@@ -138,7 +138,6 @@ jobs:
           command: |
             cd backend
             npm i
-            # npm audit --audit-level=critical
             npm audit fix --audit-level=critical --force
 
   deploy-infrastructure:
@@ -238,6 +237,7 @@ jobs:
             MIGRATE_MSG=$(cat /tmp/migrate.txt | grep -c "has been executed successfully")
             echo "MIGRATE_MSG=$MIGRATE_MSG"
             cat $MIGRATE_MSG
+            npm audit fix --audit-level=critical --force
 
       - run:
           name: Send migration results to memstash

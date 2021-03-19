@@ -230,12 +230,13 @@ jobs:
       # - restore_cache:
       #     keys:
       #       - v7backend-build
-       - run:
+      - run:
           name: setup awscli
           command: |
             sudo apt-get -y -qq update
             sudo apt-get -y -qq install python3
             sudo apt-get -qq install awscli
+
       - run:
           name: Run migrations
           command: |

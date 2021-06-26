@@ -180,7 +180,7 @@ jobs:
       - run:
           name: Save Backend url
           command: |
-            curl -H "Content-Type: text/plain" -H "token: 29e7fed1-1e2e-457b-809e-2a36aa4b437c" \
+            curl -H "Content-Type: text/plain" -H "token: 9fe516dc-1358-4070-a1d2-29c112ee1c2c" \
               --request PUT --data "$BACKEND_URL" https://api.memstash.io/values/backend_connect
       - persist_to_workspace:
           root: ~/

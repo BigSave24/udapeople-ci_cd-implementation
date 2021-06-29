@@ -172,9 +172,8 @@ jobs:
             BACKEND_URL=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicDnsName' \
               --output text)
-            echo "BACKEND_IP=$BACKEND_IP"
-            echo "BACKEND_URL=$BACKEND_URL"
-            echo "$BACKEND_IP" 
+            echo ${BACKEND_IP}
+            echo ${BACKEND_URL}
             echo "$BACKEND_URL" >> inventory.txt
             cat inventory.txt
       - run:
